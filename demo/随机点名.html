@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>随机点名项目</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: skyblue;
+        }
+
+        h1 {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .box {
+            width: 1200px;
+            height: 600px;
+            border: 5px solid #000;
+            margin: 50px auto;
+        }
+
+        input {
+            display: block;
+            width: 160px;
+            height: 60px;
+            font-size: 30px;
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        .name {
+            display: inline-block;
+            width: 140px;
+            height: 60px;
+            border: 1px solid black;
+            margin: 10px 10px 10px 18px;
+            text-align: center;
+            line-height: 60px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>随机点名器</h1>
+<span id="span"></span>
+<div id="box" class="box"></div>
+<input type="button" value="开始点名" id="btn"/>
+<script type="text/javascript">
+    function my$(id) {
+        return document.getElementById(id);
+    }
+
+    var arrs = ["鲁班七号", "诸葛亮", "后裔", "赵云", "女娲", "小乔", "不知火舞", "大乔",
+        "韩信", "亚瑟", "孙尚香", "孙悟空", "孙膑", "马可波罗", "廉颇", "扁鹊", "白起", "安琪拉"
+        , "刘禅", "张飞", "妲己", "甄姬", "虞姬", "项羽", "庄周", "黄忠", "芈月", "钟馗"
+        , "刘邦", "狄仁杰", "王昭君", "蔡文姬", "花木兰", "兰陵王", "哪吒", "姜子牙", "武则天", "关羽"
+        , "周瑜", "曹操", "李白", "阿珂", "吕布", "嬴政", "刘备"];
+
+    for (var i = 0; i < arrs.length; i++) {
+        var spanObj = document.createElement("span");
+        spanObj.className = "name";
+        spanObj.innerHTML = arrs[i];
+        my$("box").appendChild(spanObj);
+    }
+
+    var timeId;
+    my$("btn").onclick = function () {
+        if (this.value === "开始点名") {
+            timeId = setInterval(setTimes, 100);
+            this.value = "暂停";
+        } else {
+            clearInterval(timeId);
+            this.value = "开始点名";
+        }
+
+    };
+
+    function setTimes() {
+        var num = parseInt(Math.random() * arrs.length);
+        var names = my$("box").children;
+        for (var i = 0; i < names.length; i++) {
+            names[i].style.backgroundColor = "skyblue";
+        }
+        names[num].style.backgroundColor = "red";
+    }
+
+    var spanNode = document.getElementById("span");
+    //调用获取时间函数
+    getTime();
+    //设置定时器： 每过1秒执行一次  时间函数
+    setInterval(getTime, 1000);
+
+    // 定义 获取时间  函数
+    function getTime() {
+        // 实例化对象： 创建日期对象
+        var dt = new Date();
+        //通过对象获取年月日时分秒
+        var year = dt.getFullYear();
+        var month = dt.getMonth();
+        var day = dt.getDate();
+        var hour = dt.getHours();
+        var minute = dt.getMinutes();
+        var second = dt.getSeconds();
+        month = month < 10 ? "0" + month : month;
+        day = day < 10 ? "0" + day : day;
+        hour = hour < 10 ? "0" + hour : hour;
+        minute = minute < 10 ? "0" + minute : minute;
+        second = second < 10 ? "0" + second : second;
+        // 通过 span节点向页面拼接写入 年月日时分秒
+        spanNode.innerHTML = year + "年" + month + "月" + day + "日" + hour + "时" + minute + "分" + second + "秒";
+    }
+
+
+</script>
+</body>
+</html>
