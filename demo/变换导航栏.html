@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>变换导航栏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bd ul li {
+            list-style: none;
+        }
+
+        .box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+
+        .hd {
+            height: 45px;
+        }
+
+        .hd span {
+            display: inline-block;
+            width: 90px;
+            background-color: skyblue;
+            line-height: 45px;
+            font-size: 25px;
+            font-weight: lighter;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .hd span.current {
+            background-color: pink;
+        }
+
+        .bd ul li {
+            height: 255px;
+            background-color: pink;
+            display: none;
+        }
+
+        .bd li.current {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="box">
+    <div class="hd">
+        <span class="current">体育</span>
+        <span>娱乐</span>
+        <span>新闻</span>
+        <span>综合</span>
+    </div>
+    <div class="bd">
+        <ul>
+            <li class="current">我是体育模块</li>
+            <li>我是娱乐模块</li>
+            <li>我是新闻模块</li>
+            <li>我是综合模块</li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    function my$(id) {
+        return document.getElementById(id)
+    }
+
+    var box = my$("box");
+    //上半部
+    var hd = box.getElementsByTagName("div")[0];
+    //下半部
+    var bd = box.getElementsByTagName("div")[1];
+    //获取li标签
+    var li = bd.getElementsByTagName("li");
+
+    var spans = hd.getElementsByTagName("span");
+    for (var i = 0; i < spans.length; i++) {
+        //点击之前就先自定义一个属性来存储索引
+        spans[i].setAttribute("index", i);
+
+        spans[i].onclick = function () {
+            //移除所有span的样式
+            for (var j = 0; j < spans.length; j++) {
+                spans[j].removeAttribute("class");
+            }
+            //被点击的span应用样式
+            this.className = "current";
+            //获取索引值
+            var num = this.getAttribute("index");
+
+            for (var n = 0; n < li.length; n++) {
+                li[n].removeAttribute("class");
+            }
+            //根据索引值来设置下面的内容
+            li[num].className = "current";
+        }
+    }
+</script>
+</body>
+</html>
