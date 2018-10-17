@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul:first-child {
+            list-style: none;
+        }
+
+        ul:first-child li {
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: green;
+            float: left;
+            cursor: pointer;
+        }
+
+        ul:first-child li.active {
+            background: red;
+        }
+
+        .box li {
+            width: 400px;
+            height: 400px;
+            background: pink;
+            display: none;
+        }
+
+        .box li.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav">
+    <!--在渲染的时候  大小的属性会转换成小写 -->
+    <li data-content-id="content01">菜单1</li>
+    <li data-content-id="content02" class="active">菜单2</li>
+    <li data-content-id="content03">菜单3</li>
+    <li data-content-id="content04">菜单4</li>
+</ul>
+<ul class="box">
+    <li id="content01">内容1</li>
+    <li id="content04">内容4</li>
+    <li id="content03">内容3</li>
+    <li id="content02" class="show">内容2</li>
+</ul>
+<!-- css序号选择器伪类选择器  E:first-child-->
+<!-- 查找顺序：
+通过E确定父元素
+通过父元素找到所有的子元素
+再去找第一个子元素
+找到第一个子元素之后再去匹配类型是不是E  不是：无效选择器
+ul:last-child
+-->
+<script>
+    window.onload = function () {
+        var nav = document.querySelector(".nav");
+        var box = document.querySelector(".box");
+        nav.onclick = function (e) {
+            //利用委托事件来给子元素绑定事件
+            var currentLi = e.target;
+            // 判断返回值应该是布尔
+            var oldLi = document.querySelector(".nav li.active");
+            if (currentLi.classList.contains("active")) return false;
+            // 如果有就直接找到oldLi并通过classList来操作类
+            oldLi.classList.remove("active");
+            // 然后在给点击了的元素添加类
+            currentLi.classList.add("active");
+            // 对应的自定义属性获取，命名规则依照驼峰命名法，通过dataset来获取
+            var dataOldLi = oldLi.dataset.contentId;
+            var dataCurrentLi = currentLi.dataset.contentId;
+            // 找出对应的内容块
+            var oldText = document.querySelector("#" + dataOldLi);
+            var currentText = document.querySelector("#" + dataCurrentLi);
+            // 显示
+            currentText.classList.add("show");
+            // 隐藏
+            oldText.classList.remove("show");
+        };
+    };
+
+
+</script>
+
+
+<!--<script>-->
+<!--// 不会根据html页面中的元素index的变化而变化-->
+<!--/*tab切换*/-->
+<!--window.onload = function () {-->
+<!--document.querySelector('.nav').onclick = function (e) {-->
+<!--var currentLi = e.target;-->
+<!--/*已经选中 停止操作*/-->
+<!--if (currentLi.classList.contains('active')) return false;-->
+
+<!--var oldLi = document.querySelector('.nav li.active');-->
+<!--/*1.更改样式*/-->
+<!--oldLi.classList.remove('active');-->
+<!--currentLi.classList.add('active');-->
+<!--/*2.根据选中的页签去显示对应的内容*/-->
+<!--/*隐藏之前的*/-->
+<!--var oldContent = document.querySelector('#' + oldLi.dataset.contentId);-->
+<!--oldContent.classList.remove('show');-->
+<!--/*显示当前的*/-->
+<!--var currentContent = document.querySelector('#' + currentLi.dataset.contentId);-->
+<!--currentContent.classList.add('show');-->
+<!--}-->
+<!--}-->
+<!--</script>-->
+</body>
+</html>
